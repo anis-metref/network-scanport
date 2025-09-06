@@ -7,6 +7,9 @@ Une application moderne et complète de scanning réseau avec interface web, bas
 ![SQLite](https://img.shields.io/badge/SQLite-3.0+-orange.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
+![network-scan](.screenshot.png)
+
+
 ##  Fonctionnalités Principales
 
 ###  Scanning Réseau Avancé
