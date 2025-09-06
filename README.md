@@ -19,26 +19,6 @@ Une application moderne et complète de scanning réseau avec interface web, bas
 - **Identification de services** : Reconnaissance automatique des services sur ports ouverts
 - **Scan asynchrone** : Performance optimisée avec gestion de la concurrence
 
-###  Interface Utilisateur Moderne
-- **Design GNOME/Adwaita** : Interface élégante et professionnelle
-- **Temps réel** : Mise à jour instantanée via WebSockets
-- **Multi-pages** : Scanner, Historique, Analytics, Carte réseau
-- **Responsive** : Adapté à tous les écrans (desktop, tablet, mobile)
-- **Contrôles avancés** : Arrêt de scan, filtres, recherche
-
-### Base de Données et Persistance
-- **SQLite intégré** : Stockage automatique de tous les scans
-- **Historique complet** : Conservation de toutes les sessions de scan
-- **Recherche avancée** : Recherche dans l'historique par IP, service, etc.
-- **Statistiques détaillées** : Métriques et analytics sur les scans
-- **Gestion des bookmarks** : Sauvegarde de cibles favorites
-
-### Analytics et Visualisation
-- **Tableau de bord** : Vue d'ensemble des statistiques
-- **Carte réseau interactive** : Visualisation graphique des réseaux scannés
-- **Métriques en temps réel** : Progression, hôtes découverts, services actifs
-- **Historique détaillé** : Consultation et gestion des scans précédents
-
 ## Installation et Démarrage
 
 ### Prérequis
