@@ -1,6 +1,6 @@
 #  Network Scanner 
 
-Une application moderne et complète de scanning réseau avec interface web professionnelle, base de données intégrée et analytics avancés.
+Une application moderne et complète de scanning réseau avec interface web, base de données intégrée et analytics avancés.
 
 ![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)
