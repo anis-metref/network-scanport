@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte Réseau - Network Scanner Pro</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./database-styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Modern Header -->
+        <header class="modern-header">
+            <div class="header-container">
+                <div class="brand" onclick="window.location.href='index.html'" style="cursor: pointer;">
+                    <div class="brand-icon">
+                        <div class="shield-icon"></div>
+                    </div>
+                    <div class="brand-text">
+                        <h1>Network Scanner Pro</h1>
+                        <span class="brand-subtitle">Carte du Réseau</span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <div class="status-indicator">
+                        <div class="status-dot active"></div>
+                        <span>Système protégé</span>
+                    </div>
+                    <div class="header-menu">
+                        <button class="btn-header" onclick="window.location.href='analytics.html'">
+                            <div class="analytics-icon-small"></div>
+                            Analytics
+                        </button>
+                        <button class="btn-header active">
+                            <div class="map-icon-small"></div>
+                            Carte
+                        </button>
+                        <button class="btn-header" onclick="window.location.href='history.html'">
+                            <div class="history-icon-small"></div>
+                            Historique
+                        </button>
+                        <button class="btn-icon" onclick="window.location.href='index.html'">
+                            <div class="home-icon"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Network Map Page -->
+        <main class="network-map-page">
+            <div class="map-page-header">
+                <h2>Carte du Réseau</h2>
+                <div class="map-controls">
+                    <button class="btn-map-control" onclick="toggleMapView()" id="map-view-toggle">
+                        <div class="globe-icon"></div>
+                        Vue Satellite
+                    </button>
+                    <button class="btn-map-control" onclick="centerMap()">
+                        <div class="center-icon"></div>
+                        Centrer
+                    </button>
+                    <button class="btn-close-analytics" onclick="window.location.href='index.html'">
+                        <div class="close-icon"></div>
+                        Retour
+                    </button>
+                </div>
+            </div>
+            
+            <div class="map-page-content">
+                <div class="map-main">
+                    <div id="network-map" class="network-map"></div>
+                </div>
+                
+                <div class="map-sidebar">
+                    <div class="map-legend">
+                        <h3>Légende</h3>
+                        <div class="legend-item">
+                            <div class="legend-marker online"></div>
+                            <span>Hôtes en ligne</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-marker offline"></div>
+                            <span>Hôtes hors ligne</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-marker gateway"></div>
+                            <span>Passerelle</span>
+                        </div>
+                    </div>
+                    
+                    <div class="map-stats">
+                        <h3>Statistiques</h3>
+                        <div class="stat-item">
+                            <span class="stat-label">Hôtes découverts</span>
+                            <span class="stat-value" id="map-hosts-count">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Services actifs</span>
+                            <span class="stat-value" id="map-services-count">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Réseaux scannés</span>
+                            <span class="stat-value" id="map-networks-count">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="host-details" id="selected-host-details" style="display: none;">
+                        <h3>Détails de l'hôte</h3>
+                        <div class="host-detail-content">
+                            <!-- Contenu dynamique -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="./app.js"></script>
+    <script>
+        // Initialize network map page
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('=== INITIALISATION PAGE CARTE RÉSEAU ===');
+            
+            // Initialize network map
+            if (!window.networkMap) {
+                console.log('Création du NetworkMap...');
+                window.networkMap = new NetworkMap();
+                window.networkMap.initialize();
+            }
+            
+            // Load data from database
+            try {
+                await loadNetworkMapFromDatabase();
+                console.log('Carte réseau initialisée avec succès');
+            } catch (error) {
+                console.error('Erreur lors de l\'initialisation:', error);
+            }
+        });
+    </script>
+</body>
+</html>

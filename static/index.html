@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Network Scanner Pro - Protection & Analyse Réseau</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="database-styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.29.3/index.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Modern Header -->
+        <header class="modern-header">
+            <div class="header-container">
+                <div class="brand" onclick="showDashboard()" style="cursor: pointer;">
+                    <div class="brand-icon">
+                        <div class="shield-icon"></div>
+                    </div>
+                    <div class="brand-text">
+                        <h1>Network Scanner Pro</h1>
+                        <span class="brand-subtitle">Protection & Analyse Réseau</span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <div class="status-indicator">
+                        <div class="status-dot active"></div>
+                        <span>Système protégé</span>
+                    </div>
+                    <div class="header-menu">
+                        <button class="btn-header" onclick="window.location.href='analytics.html'">
+                            <div class="analytics-icon-small"></div>
+                            Analytics
+                        </button>
+                        <button class="btn-header" onclick="window.location.href='network-map.html'">
+                            <div class="map-icon-small"></div>
+                            Carte
+                        </button>
+                        <button class="btn-header" onclick="window.location.href='history.html'">
+                            <div class="history-icon-small"></div>
+                            Historique
+                        </button>
+                        <button class="btn-icon" onclick="showSettings()">
+                            <div class="settings-icon"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Layout -->
+        <main class="dashboard">
+            <!-- Quick Actions Panel -->
+            <section class="quick-actions">
+                <div class="action-card primary-card">
+                    <div class="card-icon scan-icon"></div>
+                    <div class="card-content">
+                        <h2>Analyse Réseau</h2>
+                        <p>Scannez votre réseau pour détecter les appareils et services</p>
+                        <button class="btn-primary" onclick="showScanPanel()">
+                            <span>Démarrer l'analyse</span>
+                            <div class="arrow-icon"></div>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="action-card" onclick="window.location.href='history.html'">
+                    <div class="card-icon history-icon"></div>
+                    <div class="card-content">
+                        <h3>Historique</h3>
+                        <p>Consultez vos scans précédents</p>
+                        <div class="status-badge info" id="history-count">0 scans</div>
+                    </div>
+                </div>
+                
+                <div class="action-card" onclick="window.location.href='network-map.html'">
+                    <div class="card-icon map-icon"></div>
+                    <div class="card-content">
+                        <h3>Carte Réseau</h3>
+                        <p>Visualisation géographique</p>
+                        <button class="btn-orange" onclick="window.location.href='network-map.html'">
+                            <span>Voir la carte</span>
+                            <div class="map-arrow"></div>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="action-card" onclick="window.location.href='analytics.html'">
+                    <div class="card-icon analytics-icon"></div>
+                    <div class="card-content">
+                        <h3>Analytics</h3>
+                        <p>Métriques et tendances</p>
+                        <button class="btn-orange" onclick="window.location.href='analytics.html'">
+                            <span>Voir les stats</span>
+                            <div class="chart-arrow"></div>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard Summary Cards -->
+            <section class="dashboard-summary" id="dashboard-summary" style="display: none;">
+                <div class="summary-card">
+                    <div class="summary-icon hosts-summary-icon"></div>
+                    <div class="summary-content">
+                        <div class="summary-number" id="dashboard-total-hosts">0</div>
+                        <div class="summary-label">Hôtes scannés</div>
+                        <div class="summary-trend" id="dashboard-hosts-trend">--</div>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon services-summary-icon"></div>
+                    <div class="summary-content">
+                        <div class="summary-number" id="dashboard-total-services">0</div>
+                        <div class="summary-label">Services détectés</div>
+                        <div class="summary-trend" id="dashboard-services-trend">--</div>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon scans-summary-icon"></div>
+                    <div class="summary-content">
+                        <div class="summary-number" id="dashboard-total-scans">0</div>
+                        <div class="summary-label">Scans effectués</div>
+                        <div class="summary-trend" id="dashboard-scans-trend">--</div>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon network-summary-icon"></div>
+                    <div class="summary-content">
+                        <div class="summary-number" id="dashboard-networks">0</div>
+                        <div class="summary-label">Réseaux explorés</div>
+                        <div class="summary-trend" id="dashboard-networks-trend">--</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Scan Configuration Panel (Hidden by default) -->
+            <section id="scan-panel" class="scan-panel" style="display: none;">
+                <div class="panel-header">
+                    <h2>Configuration de l'Analyse</h2>
+                    <button class="btn-close" onclick="hideScanPanel()">×</button>
+                </div>
+                
+                <div class="panel-content">
+                    <div class="config-section">
+                        <h3>Interfaces Réseau Détectées</h3>
+                        <div id="interfaces-list" class="interfaces-grid">
+                            <div class="loading">Détection des interfaces...</div>
+                        </div>
+                    </div>
+
+                    <form id="scan-form" class="scan-config">
+                        <div class="config-row">
+                            <div class="form-group">
+                                <label for="target">Cible d'analyse</label>
+                                <input type="text" id="target" name="target" placeholder="192.168.1.0/24" required>
+                                <small>IP, réseau CIDR ou plage d'adresses</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="scan-type">Type d'analyse</label>
+                                <select id="scan-type" name="scan_type">
+                                    <option value="quick">Analyse Rapide (1-1024 ports)</option>
+                                    <option value="range">Analyse Approfondie (1-10000 ports)</option>
+                                    <option value="full">Analyse Complète (tous les ports)</option>
+                                </select>
+                                <small>Détection automatique de tous les services</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ports">Ports spécifiques (optionnel)</label>
+                            <input type="text" id="ports" name="ports" placeholder="Laissez vide pour analyse automatique complète">
+                            <small>Exemple: 22,80,443,8080 ou laissez vide pour détection automatique</small>
+                        </div>
+
+                        <div class="scan-actions">
+                            <button type="submit" class="btn-scan" id="scan-btn">
+                                <div class="btn-content">
+                                    <div class="scan-icon-btn"></div>
+                                    <span class="btn-text">Lancer l'Analyse</span>
+                                </div>
+                                <div class="btn-spinner" style="display: none;"></div>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Scan Status Panel -->
+            <section id="scan-status" class="scan-status-panel" style="display: none;">
+                <div class="status-container">
+                    <div class="status-header">
+                        <div class="status-icon scanning"></div>
+                        <div class="status-text">
+                            <h3>Analyse en cours</h3>
+                            <p id="scan-details">Initialisation de l'analyse...</p>
+                        </div>
+                        <button class="btn-stop" onclick="stopScan()">
+                            <div class="stop-icon"></div>
+                            Arrêter
+                        </button>
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="scan-progress">0%</span>
+                            <span id="scan-eta">Estimation: --</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Dashboard -->
+            <section id="results-section" class="results-dashboard">
+                <div class="dashboard-header">
+                    <h2>Résultats de l'Analyse</h2>
+                    <div class="dashboard-actions">
+                        <label class="modern-toggle">
+                            <input type="checkbox" id="auto-scroll-toggle" checked onchange="toggleAutoScroll()">
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Suivi automatique</span>
+                        </label>
+                        <button class="btn-orange" onclick="exportResults()">
+                            Exporter
+                        </button>
+                        <button class="btn-orange btn-danger-orange" onclick="clearResults()">
+                            Effacer
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="analytics-cards" id="results-summary" style="display: none;">
+                    <div class="analytics-card hosts-active">
+                        <div class="card-icon-small active-icon"></div>
+                        <div class="card-data">
+                            <div class="data-number" id="hosts-up">0</div>
+                            <div class="data-label">Appareils Actifs</div>
+                        </div>
+                    </div>
+                    <div class="analytics-card hosts-total">
+                        <div class="card-icon-small total-icon"></div>
+                        <div class="card-data">
+                            <div class="data-number" id="hosts-total">0</div>
+                            <div class="data-label">Total Analysé</div>
+                        </div>
+                    </div>
+                    <div class="analytics-card ports-found">
+                        <div class="card-icon-small ports-icon"></div>
+                        <div class="card-data">
+                            <div class="data-number" id="ports-open">0</div>
+                            <div class="data-label">Services Détectés</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="results-list" class="results-container">
+                    <div class="empty-state-modern">
+                        <div class="empty-illustration">
+                            <div class="search-graphic"></div>
+                        </div>
+                        <h3>Prêt pour l'analyse</h3>
+                        <p>Lancez une analyse pour découvrir les appareils et services de votre réseau</p>
+                        <button class="btn-start-scan" onclick="showScanPanel()">Commencer l'analyse</button>
+                    </div>
+                </div>
+            </section>
+
+
+        </main>
+
+        <!-- About Modal -->
+        <div id="about-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>À propos de Network Scanner</h3>
+                    <button class="modal-close" onclick="hideAbout()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Network Scanner est une application moderne de scanning réseau développée avec Python et une interface web intuitive.</p>
+                    <h4>Fonctionnalités</h4>
+                    <ul>
+                        <li>Scan rapide et complet des réseaux</li>
+                        <li>Détection des ports ouverts</li>
+                        <li>Interface moderne inspirée de GNOME</li>
+                        <li>Résultats en temps réel</li>
+                        <li>Export des résultats</li>
+                        <li>Historique et favoris avec base SQLite3</li>
+                    </ul>
+                    <h4>Technologies</h4>
+                    <p>Backend: Python, FastAPI, WebSockets, SQLite3<br>
+                    Frontend: HTML5, CSS3, JavaScript moderne</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Bookmark Modal -->
+        <div id="add-bookmark-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Ajouter un Favori</h3>
+                    <button class="modal-close" onclick="hideAddBookmarkModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="bookmark-form" onsubmit="saveBookmark(event)">
+                        <div class="form-group">
+                            <label for="bookmark-name">Nom du favori</label>
+                            <input type="text" id="bookmark-name" required placeholder="Ex: Réseau bureau">
+                        </div>
+                        <div class="form-group">
+                            <label for="bookmark-target">Cible</label>
+                            <input type="text" id="bookmark-target" required placeholder="Ex: 192.168.1.0/24">
+                        </div>
+                        <div class="form-group">
+                            <label for="bookmark-description">Description</label>
+                            <textarea id="bookmark-description" placeholder="Description optionnelle"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookmark-scan-type">Type de scan</label>
+                            <select id="bookmark-scan-type">
+                                <option value="quick">Rapide</option>
+                                <option value="range">Approfondi</option>
+                                <option value="full">Complet</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookmark-ports">Ports spécifiques</label>
+                            <input type="text" id="bookmark-ports" placeholder="Ex: 22,80,443">
+                        </div>
+                        <div class="modal-actions">
+                            <button type="button" class="btn-secondary" onclick="hideAddBookmarkModal()">Annuler</button>
+                            <button type="submit" class="btn-primary">Sauvegarder</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Session Details Modal -->
+        <div id="session-details-modal" class="modal" style="display: none;">
+            <div class="modal-content large-modal">
+                <div class="modal-header">
+                    <h3>Détails de la Session</h3>
+                    <button class="modal-close" onclick="hideSessionDetailsModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="session-details-content">
+                        <!-- Contenu dynamique -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

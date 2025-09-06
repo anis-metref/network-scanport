@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historique - Network Scanner Pro</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./database-styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Modern Header -->
+        <header class="modern-header">
+            <div class="header-container">
+                <div class="brand" onclick="window.location.href='index.html'" style="cursor: pointer;">
+                    <div class="brand-icon">
+                        <div class="shield-icon"></div>
+                    </div>
+                    <div class="brand-text">
+                        <h1>Network Scanner Pro</h1>
+                        <span class="brand-subtitle">Historique des Scans</span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <div class="status-indicator">
+                        <div class="status-dot active"></div>
+                        <span>Système protégé</span>
+                    </div>
+                    <div class="header-menu">
+                        <button class="btn-header" onclick="window.location.href='analytics.html'">
+                            <div class="analytics-icon-small"></div>
+                            Analytics
+                        </button>
+                        <button class="btn-header" onclick="window.location.href='network-map.html'">
+                            <div class="map-icon-small"></div>
+                            Carte
+                        </button>
+                        <button class="btn-header active">
+                            <div class="history-icon-small"></div>
+                            Historique
+                        </button>
+                        <button class="btn-icon" onclick="window.location.href='index.html'">
+                            <div class="home-icon"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- History Page -->
+        <main class="dashboard">
+            <!-- Page Title Section -->
+            <section class="page-title-section">
+                <div class="page-title-content">
+                    <h1>Historique des Scans</h1>
+                    <p>Consultez et gérez l'historique de vos analyses réseau</p>
+                    <div class="history-page-controls">
+                        <input type="text" id="history-page-search" placeholder="Rechercher..." onkeyup="searchHistoryPage()">
+                        <select id="history-filter" onchange="filterHistory()">
+                            <option value="all">Tous les scans</option>
+                            <option value="completed">Terminés</option>
+                            <option value="error">Erreurs</option>
+                            <option value="stopped">Arrêtés</option>
+                        </select>
+                        <button class="btn-orange btn-danger-orange" onclick="clearAllHistoryPage()">
+                            Tout effacer
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Statistics Cards -->
+            <section class="quick-actions">
+                <div class="action-card">
+                    <div class="card-icon total-scans-icon"></div>
+                    <div class="card-content">
+                        <h3>Total des Scans</h3>
+                        <p><span id="history-total-scans">0</span> analyses effectuées</p>
+                        <div class="status-badge info">Historique</div>
+                    </div>
+                </div>
+                <div class="action-card">
+                    <div class="card-icon completed-scans-icon"></div>
+                    <div class="card-content">
+                        <h3>Scans Réussis</h3>
+                        <p><span id="history-completed-scans">0</span> analyses terminées</p>
+                        <div class="status-badge active">Succès</div>
+                    </div>
+                </div>
+                <div class="action-card">
+                    <div class="card-icon total-hosts-icon"></div>
+                    <div class="card-content">
+                        <h3>Hôtes Scannés</h3>
+                        <p><span id="history-total-hosts">0</span> appareils analysés</p>
+                        <div class="status-badge info">Total</div>
+                    </div>
+                </div>
+                <div class="action-card">
+                    <div class="card-icon active-hosts-icon"></div>
+                    <div class="card-content">
+                        <h3>Hôtes Actifs</h3>
+                        <p><span id="history-active-hosts">0</span> appareils en ligne</p>
+                        <div class="status-badge active">En ligne</div>
+                    </div>
+                </div>
+            </section>
+                
+            <!-- History List -->
+            <section class="results-dashboard">
+                <div class="dashboard-header">
+                    <h2>Sessions de Scan</h2>
+                    <div class="dashboard-actions">
+                        <button class="btn-orange btn-danger-orange" onclick="clearAllHistoryPage()">
+                            Effacer tout
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="history-page-sessions" class="results-container">
+                    <div class="loading-history">Chargement de l'historique...</div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Session Details Modal -->
+        <div id="session-details-modal" class="modal" style="display: none;">
+            <div class="modal-content large-modal">
+                <div class="modal-header">
+                    <h3>Détails de la Session</h3>
+                    <button class="modal-close" onclick="hideSessionDetailsModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="session-details-content">
+                        <!-- Contenu dynamique -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./app.js"></script>
+    <script>
+        // Initialize history page
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('=== INITIALISATION PAGE HISTORIQUE ===');
+            
+            if (!window.historyManager) {
+                window.historyManager = new HistoryManager();
+            }
+            
+            try {
+                await window.historyManager.initialize();
+                console.log('Page historique initialisée avec succès');
+            } catch (error) {
+                console.error('Erreur lors de l\'initialisation:', error);
+            }
+        });
+    </script>
+</body>
+</html>
