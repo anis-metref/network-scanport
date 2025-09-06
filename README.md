@@ -1,4 +1,4 @@
-#  Network Scanner Pro
+#  Network Scanner 
 
 Une application moderne et complète de scanning réseau avec interface web professionnelle, base de données intégrée et analytics avancés.
 
