@@ -23,8 +23,8 @@ Une application moderne et complète de scanning réseau avec interface web, bas
 
 ### Prérequis
 - **Python 3.8+** (recommandé : Python 3.9+)
-- **Système Linux/Unix** (optimisé pour Linux, compatible macOS)
-- **Privilèges réseau** (pour certains types de scans)
+- **Système Linux/Unix**
+- **Privilèges réseau**
 
 ### Installation Rapide
 
