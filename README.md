@@ -22,7 +22,7 @@ Une application moderne et complète de scanning réseau avec interface web, bas
 ## Installation et Démarrage
 
 ### Prérequis
-- **Python 3.8+** (recommandé : Python 3.9+)
+- **Python 3.8+**
 - **Système Linux/Unix**
 - **Privilèges réseau**
 
