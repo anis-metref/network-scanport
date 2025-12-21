@@ -98,6 +98,5 @@ Gestion complète de l'historique :
 - **Détails de session** : Vue complète des résultats de chaque scan
 - **Suppression** : Gestion individuelle ou en masse
 
-*Développé avec ❤️ pour la communauté open source*
 
 </div>
